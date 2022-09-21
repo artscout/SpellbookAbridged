@@ -51,7 +51,8 @@ function SpellBookAbridged_OnLoad(self)
 	self:RegisterEvent("PLAYER_REGEN_ENABLED");
 	
 	getglobal(AutoUpRankButton:GetName() .. "Text"):SetText(L["Auto UpRank"]);
-	
+
+
 	-- Ensure there is SpellTabInfo to grab as early as possible
 	SpellBookAbridged_CreateSpellList();
 	
@@ -226,7 +227,7 @@ function SpellBookAbridged_OnEvent(self, event, ...)
 		
 		-- Load Options data
 		SBA_LoadOptions();
-		SpellsChanged = true;
+		SpellsChanged = true; 
 	
 	elseif (event == "PLAYER_LOGOUT") then
 		-- Store current states
@@ -548,18 +549,9 @@ function SpellBookAbridged_CreateSpellList()
 		for slot = offset, total do
 			--- Grab name information
 			local name, rank = GetSpellBookItemName(slot, "spell");
-			
-			--- if not a new Spell Name
-			if ((name == savedName) and GetCVarBool("ShowAllSpellRanks")) then
-				--- then count the rank
-				countRank = countRank + 1;
-			else
-				--- else, add a spell, and set up for next spell
-				SBA_numSpells = SBA_numSpells + 1;
-				countRank = 1;
-				savedName = name;
-			end
-			
+			SBA_numSpells = SBA_numSpells + 1;
+			countRank = 1;
+			savedName = name;
 			--- store real slot and number of ranks counted in current spellList slot
 			spellList[SBA_numSpells] = {slot, countRank};
 		end
@@ -618,16 +610,21 @@ function SpellBookAbridged_AutoUpRank(spellID)
 end
 
 --- Functions to replace SpellBookFrame's functions
+local origSpellBookFrame_UpdateSpells = SpellBookFrame_UpdateSpells
+SpellBookFrame_UpdateSpells = function()
+	SpellBookAbridged_CreateSpellList();
+	origSpellBookFrame_UpdateSpells();
+end
+
 
 local origSpellBookFrame_Update = SpellBookFrame_Update;
 SpellBookFrame_Update = function()
 	-- Trying not to rebuild the list every time SpellBookFrame_Update occurs,
 	-- but the List needs to be built before SpellBookFrame_Update gets called in
 	-- the event.
-	if (SpellsChanged == true) then
-		SpellBookAbridged_CreateSpellList();
-		SpellsChanged = false;
-	end
+--	if (SpellsChanged == true) then
+	SpellBookAbridged_CreateSpellList();
+--	end
 	
 	if (SpellBookFrame.bookType == "SBA") then
 		SBA_UpdateConfigFrame();
@@ -638,10 +635,11 @@ SpellBookFrame_Update = function()
 		SpellBookPageText:Show();
 	end
 	-- Post Hook
-	
+
 	SpellBookFrame_SetTabType(SpellBookFrameTabButton1, BOOKTYPE_SPELL);
 	SpellBookFrameTabButton1:Show();
 	SpellBookFrameTabButton3:Show();
+
 end
 
 SpellButton_UpdateButton = function(self)
@@ -676,7 +674,7 @@ SpellButton_UpdateButton = function(self)
 	local child = self.SBAchild;  -- Grab SpellBook Abridged's child button
 	
 	-- If no spell, hide everything and return, or kiosk mode and future spell
-	if ( not texture or (strlen(texture) == 0) or (slotType == "FUTURESPELL" and IsKioskModeEnabled())) then
+	if ( not texture or (strlen(texture) == 0) or (slotType == "FUTURESPELL" and Kiosk.IsEnabled())) then
 		iconTexture:Hide();
 		spellString:Hide();
 		subSpellString:Hide();
@@ -756,18 +754,16 @@ SpellButton_UpdateButton = function(self)
 				end
 			end
 			
-			if ( subSpellName == "" ) then
-				spellString:SetPoint("LEFT", self, "RIGHT", 5, 1);
-			else
-				spellString:SetPoint("LEFT", self, "RIGHT", 5, 3);
-			end
-			
 			subSpellString:SetText(subSpellName);
 		end);
 	end
 
-
-
+	if ( subSpellName == "" ) then
+		spellString:SetPoint("LEFT", self, "RIGHT", 5, 1);
+	else
+		spellString:SetPoint("LEFT", self, "RIGHT", 5, 3);
+	end
+			
 	iconTexture:Show();
 	spellString:Show();
 	subSpellString:Show();
