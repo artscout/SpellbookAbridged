@@ -1,7 +1,8 @@
 Title: SpellBook Abridged for WoW Classic
 Author: LBXZero (lightning_bug_x@yahoo.com)
+Current maintainer: Artscout375 (artscout at github)
 Version: 2.6.x
-Supports WoW Classic Version 1.13.2
+Supports WotLK Classic Version 3.4.0
 
 Info and Description:
 With the return of Vanilla World of Warcraft comes the return of learning spells by rank. 
@@ -12,14 +13,6 @@ each spell.
 
 After some time of playing a mage, I made an addon during Burning Crusade to condense the 
 spellbook and display the ranks in a different way.
-
---- SpellBook Rank Filter ---
-
-This version is more minimal than my original version.  I made the filter and modified a few 
-functions in SpellBookFrame.lua to adapt the base Spellbook to accept a custom spell list.  
-For this addon, it filters the spellbook to show only the last rank of each unique spell.  To 
-view the lower ranks, I added a check button "Rank Filter" that you can toggle to switch 
-between the filtered list and the full list.
 
 --- Auto UpRank Feature ---
 
@@ -89,6 +82,11 @@ The Pet Spellbook for Hunters is not affected, as it doesn't need anything.
 My goal is to append onto the existing Spellbook in WoW's UI in order to minimize conflicts 
 with other addons that may alter the Spellbook.  With the next potential feature I am reviewing 
 to add into the Spellbook, my goal to keep the Spellbook simple may change.
+
+Version 2.6.5
+		Updated for Wrath of the Lich King Classic
+		Removed spell rank filter as unneded because SpellBook in WotLKC already has this functionality
+		Fixed spell Auto UpRank
 
 Version 2.6.4:
 

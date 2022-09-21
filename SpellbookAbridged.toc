@@ -1,8 +1,8 @@
 ## Interface: 30400
 ## Title: Spellbook Abridged
 ## Notes: A Spellbook Filter to reduce clutter from multiple ranks of the same spell.
-## Author: LBXZero
-## Version: 2.6.4
+## Author: LBXZero, Artscout375
+## Version: 2.6.5
 ## SavedVariablesPerCharacter: SpellBookAbridgedOptions
 
 Libs\AceLocale-3.0\AceLocale-3.0.xml
@@ -39,6 +39,11 @@ SpellbookAbridged.xml
 #
 #
 # Change Log
+#	Version 2.6.5
+#		- Updated for Wrath of the Lich King Classic
+#		- Removed spell rank filter as unneded because SpellBook in WotLKC already has this functionality
+#		- Fixed spell Auto UpRank
+#
 #	Version 2.6.4
 #		- Some Global clean up
 #

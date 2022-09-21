@@ -101,18 +101,11 @@ function SBA_LoadOptions()	-- Load Saved Options
 		SpellBookAbridgedOptions = {};  
 	end
 	
---[[	if (SpellBookAbridgedOptions["RankFilter"]) then  -- Rank Filter Option
-		RankFilterButton:SetChecked(SpellBookAbridgedOptions["RankFilter"]);
-	else
-		RankFilterButton:ClearAllPoints();
-		RankFilterButton:SetPoint("TOPRIGHT", SpellBookFrame, "TOPRIGHT", -130, -35);
-		SpellBookAbridgedOptions["RankFilter"] = true;
-	end ]]
 	if (SpellBookAbridgedOptions["AutoUpRank"]) then  -- Auto Up-Rank Option
 		AutoUpRankButton:SetChecked(SpellBookAbridgedOptions["AutoUpRank"]);
 	else
 		AutoUpRankButton:ClearAllPoints();
-		AutoUpRankButton:SetPoint("TOPRIGHT", SpellBookFrame, "TOPRIGHT", -130, -55); 		
+		AutoUpRankButton:SetPoint("TOPLEFT", SpellBookFrame, "TOPLEFT", 74, -55); 		
 		SpellBookAbridgedOptions["AutoUpRank"] = true;
 	end
 	if (SpellBookAbridgedOptions["NormalColor"]) then -- Use Custom Colors for Normal
@@ -181,7 +174,6 @@ function SBA_LoadOptions()	-- Load Saved Options
 end
 
 function SBA_SaveOptions()  -- Save Options
---	SpellBookAbridgedOptions["RankFilter"] = RankFilterButton:GetChecked();
 	SpellBookAbridgedOptions["AutoUpRank"] = AutoUpRankButton:GetChecked();
 	SpellBookAbridgedOptions["NormalColor"] = colorList[1];
 	SpellBookAbridgedOptions["NormalTextColor"] = colorList[11];
@@ -254,7 +246,7 @@ function SpellBookAbridged_OnEvent(self, event, ...)
 		-- Auto UpRank Function
 		if (AutoUpRankButton:GetChecked()) then
 			local spellID, skillTab = ...;
-			SpellBookAbridged_AutoUpRank(spellID, skillTab);
+			SpellBookAbridged_AutoUpRank(spellID);
 		end
 		SpellsChanged = true;
 		
@@ -332,13 +324,6 @@ end
 function SBA_OptionButton_OnDragStop(self)
 	self:StopMovingOrSizing();
 end
-
---[[function RankFilterButton_OnClick()
-	SpellBookAbridged_CreateSpellList();
-	if (SpellBookFrame:IsVisible()) then
-		SpellBookFrame_Update();
-	end
-end]]
 
 function AutoUpRankButton_OnClick()
 	
@@ -614,37 +599,15 @@ end
 
 -- Functions for Auto Up Rank
 
-function SpellBookAbridged_AutoUpRank(spellID, skillTab)
+function SpellBookAbridged_AutoUpRank(spellID)
 	local spellName = GetSpellInfo(spellID);
-	local _, _, offset, numSpells = GetSpellTabInfo(skillTab);
-	
-	local iStart = offset + 1; -- First SpellBook Slot in Spell Tab
-	local iEnd = offset + numSpells; -- Last SpellBook Slot in Spell Tab
-	
-	local spellIndex = 0; -- index of last iteration of spell name detected
-	local spellOldIndex = 0; -- index of prior to last iteration of the spell name detected
-	
-	ClearCursor(); -- Initial Clear Cursor
-	
-	for i = iStart, iEnd do
-		--Search spellbook range for the indices with the new spell name and find the previous highest rank
-		local iName, iRank = GetSpellBookItemName(i, BOOKTYPE_SPELL);
-		if (spellName == iName) then
-			spellOldIndex = spellIndex;
-			spellIndex = i;
-		end
-	end
-	
-	local _, spellOldID = GetSpellBookItemInfo(spellOldIndex, BOOKTYPE_SPELL);
-	
-	if (spellOldIndex > 0) then
-		-- If spellOldIndex is nil or 0, then the spell is new or rank was automatically replaced (not Mana based spell)
-		-- If greater than 0, then a previous highest rank exists and should be updated to new highest rank.
-		-- Search ActionSlots and replace
-		for j = 1, 120 do -- 120 Action Slots
-			local actionType, actionID = GetActionInfo(j);
-			if ( actionType == "spell" ) then
-				if (actionID == spellOldID) then
+
+	for j = 1, 120 do -- 120 Action Slots
+		local actionType, actionID = GetActionInfo(j);
+		if (actionType == "spell" ) then
+			actionSpellName = GetSpellInfo(actionID)
+			if (actionSpellName == spellName) then
+				if actionID < spellID then
 					PickupSpell(spellID);  -- set new spell to cursor
 					PlaceAction(j); -- place spell in cursor (no other function exists to alter action slots)
 					ClearCursor(); -- clear old spell from cursor
