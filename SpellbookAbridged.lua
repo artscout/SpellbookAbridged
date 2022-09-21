@@ -30,10 +30,8 @@ local L = LibStub("AceLocale-3.0"):GetLocale("SpellbookAbridged")
 -- Slash command to reset Rank Filter Button Location
 SLASH_SBA1 = "/sba";
 SlashCmdList["SBA"] = function (msg, editbox)
-	RankFilterButton:ClearAllPoints();
-	RankFilterButton:SetPoint("TOPRIGHT", SpellBookFrame, "TOPRIGHT", -130, -35);
 	AutoUpRankButton:ClearAllPoints();
-	AutoUpRankButton:SetPoint("TOPRIGHT", SpellBookFrame, "TOPRIGHT", -130, -55); 
+	AutoUpRankButton:SetPoint("TOPLEFT", SpellBookFrame, "TOPLEFT", 74, -55); 
 end
 
 -- Addon's Initial Loading Function
@@ -52,7 +50,6 @@ function SpellBookAbridged_OnLoad(self)
 	self:RegisterEvent("PLAYER_REGEN_DISABLED");
 	self:RegisterEvent("PLAYER_REGEN_ENABLED");
 	
---	getglobal(RankFilterButton:GetName() .. "Text"):SetText("Rank Filter");
 	getglobal(AutoUpRankButton:GetName() .. "Text"):SetText(L["Auto UpRank"]);
 	
 	-- Ensure there is SpellTabInfo to grab as early as possible

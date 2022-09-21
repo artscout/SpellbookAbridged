@@ -5,7 +5,9 @@
 ## Version: 2.6.4
 ## SavedVariablesPerCharacter: SpellBookAbridgedOptions
 
-Locales\Locales.xml
+Libs\AceLocale-3.0\AceLocale-3.0.xml
+Locales\enUS.lua
+Locales\ruRU.lua
 SpellbookAbridged.xml
 
 # This Addon implements a means to filter the spells in SpellBookFrame.

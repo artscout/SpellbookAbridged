@@ -26,6 +26,7 @@
 		<PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>
 		<HighlightTexture name="$parentHighlight" file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD"/>
 		<CheckedTexture file="Interface\Buttons\CheckButtonHilight" alphaMode="ADD"/>
+		<NormalFont style="GameFontNormalSmall"/>
 	</CheckButton>
 
 	<Script file="SpellBookAbridged.lua"/>
@@ -47,7 +48,7 @@
 		</Anchors>
 	</CheckButton>
 -->	
-	<CheckButton name="AutoUpRankButton" inherits="OptionsCheckButtonTemplate" parent="SpellBookFrame" checked="true" movable="true" enableMouse="true" >
+	<CheckButton name="AutoUpRankButton" inherits="OptionsSmallCheckButtonTemplate" parent="SpellBookFrame" checked="true" movable="true" enableMouse="true" >
 		<Scripts>
 			<OnLoad function="SBA_OptionButton_OnLoad" />
 			<OnClick function="AutoUpRankButton_OnClick" />
